@@ -3,12 +3,12 @@ namespace:
 
 backend:
   image: local/vacation-backend
-  tag: "0.2"
+  tag: "0.4"
   pullPolicy: Never
 
 frontend:
   image: local/vacation-frontend
-  tag: "0.2"
+  tag: "0.4"
   pullPolicy: Never
 
 postgres:
@@ -18,3 +18,6 @@ postgres:
   username: joe_01001010
   password: joe_01001010
   storageSize: 25Gi
+
+uploads:
+  storageSize: 5Gi

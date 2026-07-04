@@ -22,6 +22,38 @@
     </header>
     
     <main>
+      <section class="panel">
+        <h2>Create a new photo section</h2>
+      
+        <form id="sectionForm" class="form-grid">
+          <input id="sectionName" placeholder="Section name, e.g. Italy 2026" required />
+          <input id="sectionLocation" placeholder="Location, e.g. Italy" />
+          <input id="sectionYear" type="number" placeholder="Year" />
+          <textarea id="sectionDescription" placeholder="Description"></textarea>
+          <button type="submit">Create section</button>
+        </form>
+      </section>
+      
+      <section class="panel">
+        <h2>Upload a photo</h2>
+      
+        <form id="uploadForm" class="form-grid">
+          <select id="sectionSelect" required>
+            <option value="">Choose a section</option>
+          </select>
+      
+          <input id="photoTitle" placeholder="Photo title" required />
+          <textarea id="photoCaption" placeholder="Caption"></textarea>
+          <input id="photoFile" type="file" accept="image/*" required />
+      
+          <button type="submit">Upload photo</button>
+        </form>
+      </section>
+
+      <section class="panel">
+        <h2>Sections</h2>
+        <div id="sectionButtons" class="toolbar"></div>
+      </section>
       <section id="gallery" class="gallery"></section>
     </main>
     <script src="/app.js"></script>

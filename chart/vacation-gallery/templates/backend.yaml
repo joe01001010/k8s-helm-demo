@@ -12,6 +12,10 @@ spec:
       labels:
         app: vacation-gallery-backend
     spec:
+      volumes:
+        - name: uploads
+          persistentVolumeClaim:
+            claimName: vacation-gallery-uploads
       containers:
         - name: backend
           image: "{{ .Values.backend.image }}:{{ .Values.backend.tag }}"
@@ -26,7 +30,12 @@ spec:
             httpGet:
               path: /api/health
               port: 3000
+          volumeMounts:
+            - name: uploads
+              mountPath: /data/uploads
           env:
+            - name: UPLOAD_DIR
+              value: /data/uploads
             - name: DB_HOST
               value: vacation-gallery-postgres
             - name: DB_PORT

@@ -169,3 +169,31 @@ button:hover {
   gap: 8px;
   margin-top: 12px;
 }
+
+.panel {
+  border: 1px solid rgba(148, 163, 184, 0.25);
+  border-radius: 24px;
+  padding: 24px;
+  margin-bottom: 24px;
+  background: rgba(15, 23, 42, 0.88);
+}
+
+.form-grid {
+  display: grid;
+  gap: 12px;
+}
+
+input,
+select,
+textarea {
+  width: 100%;
+  border: 1px solid rgba(148, 163, 184, 0.35);
+  border-radius: 12px;
+  padding: 12px 14px;
+  background: rgba(15, 23, 42, 0.8);
+  color: #e5e7eb;
+}
+
+textarea {
+  min-height: 90px;
+}
