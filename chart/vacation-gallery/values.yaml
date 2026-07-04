@@ -1,3 +1,6 @@
+namespace:
+  name: vacation-gallery
+
 backend:
   image: local/vacation-backend
   tag: "0.1"
@@ -7,3 +10,11 @@ frontend:
   image: local/vacation-frontend
   tag: "0.1"
   pullPolicy: Never
+
+postgres:
+  image: postgres
+  tag: "16-alpine"
+  database: vacation_gallery
+  username: joe_01001010
+  password: joe_01001010
+  storageSize: 25Gi
