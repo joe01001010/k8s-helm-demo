@@ -1,0 +1,20 @@
+<!doctype html>
+<html>
+  <head>
+    <title>Kubernetes Helm Demo</title>
+  </head>
+  <body>
+    <h1>Frontend container is running</h1>
+    <button onclick="callBackend()">Call backend</button>
+    <pre id="output"></pre>
+
+    <script>
+      async function callBackend() {
+        const response = await fetch("/api/hello");
+        const data = await response.json();
+        document.getElementById("output").textContent =
+          JSON.stringify(data, null, 2);
+      }
+    </script>
+  </body>
+</html>
