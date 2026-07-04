@@ -35,7 +35,7 @@ spec:
               mountPath: /data/uploads
           env:
             - name: UPLOAD_DIR
-              mountPath: /data/uploads
+              value: /data/uploads
             - name: DB_HOST
               value: vacation-gallery-postgres
             - name: DB_PORT

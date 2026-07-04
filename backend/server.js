@@ -18,39 +18,6 @@ fs.mkdirSync(uploadDir, { recursive: true });
 app.use("/uploads", express.static(uploadDir));
 
 const storage = multer.diskStorage({
-	  destination: (req, file, cb) => {
-		      cb(null, uploadDir);
-		    },
-	  filename: (req, file, cb) => {
-		      const safeOriginalName = file.originalname
-		        .toLowerCase()
-		        .replace(/[^a-z0-9.]+/g, "-");
-
-		      cb(null, `${Date.now()}-${safeOriginalName}`);
-		    }
-});
-
-const upload = multer({
-	  storage,
-	  limits: {
-		      fileSize: 10 * 1024 * 1024
-		    },
-	  fileFilter: (req, file, cb) => {
-		      if (!file.mimetype.startsWith("image/")) {
-			            return cb(new Error("Only image uploads are allowed"));
-			          }
-
-		      cb(null, true);
-		    }
-});
-
-const uploadDir = process.env.UPLOAD_DIR || "/data/uploads";
-
-fs.mkdirSync(uploadDir, { recursive: true });
-
-app.use("/uploads", express.static(uploadDir));
-
-const storage = multer.diskStorage({
   destination: (req, file, cb) => {
     cb(null, uploadDir);
   },
@@ -87,22 +54,6 @@ const pool = new Pool({
 
 async function initDb() {
   await pool.query(`
-    CREATE TABLE IF NOT EXISTS photos (
-      id SERIAL PRIMARY KEY,
-      name TEXT NOT NULL UNIQUE,
-      description TEXT NOT NULL DEFAULT,
-      location TEXT NOT NULL DEFAULT,
-      year INTEGER,
-      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
-    );
-  `);
-
-  await pool.query(`
-    ALTER TABLE photos
-    ADD COLUMN IF NOT EXISTS section_id INTEGER REFERENCES sections(id) ON DELETE SET NULL;
-  `);
-
-  await pool.query(`
     CREATE TABLE IF NOT EXISTS sections (
       id SERIAL PRIMARY KEY,
       name TEXT NOT NULL UNIQUE,
@@ -113,17 +64,94 @@ async function initDb() {
     );
   `);
 
-  const result = await pool.query("SELECT COUNT(*)::int AS count FROM photos");
+  await pool.query(`
+    CREATE TABLE IF NOT EXISTS photos (
+      id SERIAL PRIMARY KEY,
+      title TEXT NOT NULL,
+      location TEXT NOT NULL,
+      vacation TEXT NOT NULL,
+      year INTEGER NOT NULL,
+      image_url TEXT NOT NULL,
+      caption TEXT NOT NULL,
+      featured BOOLEAN NOT NULL DEFAULT false,
+      section_id INTEGER REFRENCES sections(id) ON DELETE SET NULL,
+      created_at TIMESTAMPTZ NOT NULL DEFAULT now()
+    );
+  `);
 
-  if (result.rows[0].count === 0) {
+  await pool.query(`
+    ALTER TABLE photos
+    ADD COLUMN IF NOT EXISTS section_id INTEGER REFERENCES sections(id) ON DELETE SET NULL;
+  `);
+
+  const sectionResult = await pool.query("SELECT COUNT(*)::int AS count FROM sections");
+
+  if (sectionResult.rows[0].count === 0) {
     await pool.query(`
-      INSERT INTO photos (title, location, vacation, year, image_url, caption, featured)
+      INSERT INTO sections (name, description, location, year)
       VALUES
-        ('Mountain sunrise', 'Colorado', 'Rocky Mountain Getaway', 2025, '/photos/rocky-mountains.svg', 'Early morning view from the trailhead', true),
-        ('Alpine lake', 'Colorado', 'Rocky Mountain Getaway', 2025, '/photos/alpine-lake.svg', 'Clear water surrounded by peaks', false),
-        ('Ocean walk', 'Florida', 'Beach Trip', 2024, '/photos/beach.svg', 'Walking near the water before sunset', false),
-        ('Palm trees', 'Florida', 'Beach Trip', 2024, '/photos/palms.svg', 'A quiet afternoon near the coast', false),
-        ('Red rocks', 'Arizona', 'Desert Road Trip', 2023, '/photos/desert.svg', 'Late afternoon light over the desert', false);
+        ('Rocky Mountain Getaway', 'Mountain views, hiking trails, and quiet evenings outisde.', 'Colorado', 2025),
+        ('Beach Trip', 'Warm weather, ocean air, seafood, and a slower pace.', 'Florida', 2024),
+        ('Desert Road Trip', 'Late afternoon light over the desert', 'Arizona', 2023);
+    `);
+  }
+
+  const photoResult = await pool.query("SELECT COUNT(*)::int AS count FROM photos");
+
+if (photoResult.rows[0].count === 0) {
+    await pool.query(`
+      INSERT INTO photos (title, location, vacation, year, image_url, caption, featured, section_id)
+      VALUES
+        (
+          'Mountain sunrise',
+          'Colorado',
+          'Rocky Mountain Getaway',
+          2025,
+          '/photos/rocky-mountains.svg',
+          'Early morning view from the trailhead',
+          true,
+          (SELECT id FROM sections WHERE name = 'Rocky Mountain Getaway')
+        ),
+        (
+          'Alpine lake',
+          'Colorado',
+          'Rocky Mountain Getaway',
+          2025,
+          '/photos/alpine-lake.svg',
+          'Clear water surrounded by peaks',
+          false,
+          (SELECT id FROM sections WHERE name = 'Rocky Mountain Getaway')
+        ),
+        (
+          'Ocean walk',
+          'Florida',
+          'Beach Trip',
+          2024,
+          '/photos/beach.svg',
+          'Walking near the water before sunset',
+          false,
+          (SELECT id FROM sections WHERE name = 'Beach Trip')
+        ),
+        (
+          'Palm trees',
+          'Florida',
+          'Beach Trip',
+          2024,
+          '/photos/palms.svg',
+          'A quiet afternoon near the coast',
+          false,
+          (SELECT id FROM sections WHERE name = 'Beach Trip')
+        ),
+        (
+          'Red rocks',
+          'Arizona',
+          'Desert Road Trip',
+          2023,
+          '/photos/desert.svg',
+          'Late afternoon light over the desert',
+          false,
+          (SELECT id FROM sections WHERE name = 'Desert Road Trip')
+        );
     `);
   }
 }
