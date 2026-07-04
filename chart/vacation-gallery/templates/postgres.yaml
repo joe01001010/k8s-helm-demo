@@ -1,0 +1,49 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vacation-gallery-postgres
+  namespace: {{ .Values.namespace.name }}
+spec:
+  selector:
+    app: vacation-gallery-postgres
+  ports:
+    - name: postgres
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: vacation-gallery-postgres
+  namespace: {{ .Values.namespace.name }}
+spec:
+  serviceName: vacation-gallery-postgres
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vacation-gallery-postgres
+  template:
+    metadata:
+      labels:
+        app: vacation-gallery-postgres
+    spec:
+      containers:
+        - name: postgres
+          image: "{{ .Values.postgres.image }}:{{ .Values.postgres.tag }}"
+          ports:
+            - containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: vacation-gallery-postgres-secret
+          volumeMounts:
+            - name: postgres-data
+              mountPath: /var/lib/postgresql/data
+  volumeClaimTemplates:
+    - metadata:
+        name: postgres-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: {{ .Values.postgres.storageSize }}
