@@ -1,9 +1,0 @@
-backend:
-  image: local/backend
-  tag: "0.1"
-  pullPolicy: Never
-
-frontend:
-  image: local/frontend
-  tag: "0.1"
-  pullPolicy: Never
