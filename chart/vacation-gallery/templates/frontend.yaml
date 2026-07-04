@@ -1,0 +1,41 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vacation-gallery-frontend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vacation-gallery-frontend
+  template:
+    metadata:
+      labels:
+        app: vacation-gallery-frontend
+    spec:
+      containers:
+        - name: frontend
+          image: "{{ .Values.frontend.image }}:{{ .Values.frontend.tag }}"
+          imagePullPolicy: {{ .Values.frontend.pullPolicy }}
+          ports:
+            - containerPort: 8080
+          volumeMounts:
+            - name: nginx-config
+              mountPath: /etc/nginx/conf.d/default.conf
+              subPath: default.conf
+              readOnly: true
+      volumes:
+        - name: nginx-config
+          configMap:
+            name: vacation-gallery-frontend-nginx
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vacation-gallery-frontend
+spec:
+  selector:
+    app: vacation-gallery-frontend
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080

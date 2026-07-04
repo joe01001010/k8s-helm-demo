@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#fed7aa"/>
+  <circle cx="650" cy="120" r="70" fill="#fb923c"/>
+  <path d="M0 390c150-80 300-20 440-80s230-30 360 30v260H0z" fill="#c2410c"/>
+  <path d="M0 470c220-50 390 20 800-30v160H0z" fill="#9a3412"/>
+  <text x="40" y="540" font-family="Arial" font-size="42" fill="#fff7ed">Desert Road Trip</text>
+</svg>

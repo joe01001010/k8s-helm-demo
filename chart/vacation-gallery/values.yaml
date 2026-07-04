@@ -1,0 +1,9 @@
+backend:
+  image: local/vacation-backend
+  tag: "0.1"
+  pullPolicy: Never
+
+frontend:
+  image: local/vacation-frontend
+  tag: "0.1"
+  pullPolicy: Never

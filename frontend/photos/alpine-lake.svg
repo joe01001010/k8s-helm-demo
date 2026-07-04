@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#0f172a"/>
+  <path d="M0 300 160 160 310 300 460 130 800 320v280H0z" fill="#475569"/>
+  <path d="M0 380c140-35 250 35 400 0s260-30 400 10v210H0z" fill="#0ea5e9"/>
+  <text x="40" y="540" font-family="Arial" font-size="42" fill="#e0f2fe">Alpine Lake</text>
+</svg>

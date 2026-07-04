@@ -1,0 +1,6 @@
+apiVersion: v2
+name: vacation-gallery
+description: Frontend and backend vacation photo gallery
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
