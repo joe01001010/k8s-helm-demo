@@ -74,7 +74,7 @@ async function initDb() {
       image_url TEXT NOT NULL,
       caption TEXT NOT NULL,
       featured BOOLEAN NOT NULL DEFAULT false,
-      section_id INTEGER REFRENCES sections(id) ON DELETE SET NULL,
+      section_id INTEGER REFERENCES sections(id) ON DELETE SET NULL,
       created_at TIMESTAMPTZ NOT NULL DEFAULT now()
     );
   `);
