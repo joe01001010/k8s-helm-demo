@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: vacation-gallery-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: vacation-gallery-backend
+  template:
+    metadata:
+      labels:
+        app: vacation-gallery-backend
+    spec:
+      containers:
+        - name: backend
+          image: "{{ .Values.backend.image }}:{{ .Values.backend.tag }}"
+          imagePullPolicy: {{ .Values.backend.pullPolicy }}
+          ports:
+            - containerPort: 3000
+          readinessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+          livenessProbe:
+            httpGet:
+              path: /api/health
+              port: 3000
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vacation-gallery-backend
+spec:
+  selector:
+    app: vacation-gallery-backend
+  ports:
+    - name: http
+      port: 3000
+      targetPort: 3000

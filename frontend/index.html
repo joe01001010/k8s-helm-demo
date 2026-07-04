@@ -1,20 +1,22 @@
 <!doctype html>
-<html>
+<html lang="en">
   <head>
-    <title>Kubernetes Helm Demo</title>
+    <meta charset="utf-8" />
+    <title>Vacation Gallery</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <link rel="stylesheet" href="/styles.css" />
   </head>
   <body>
-    <h1>Frontend container is running</h1>
-    <button onclick="callBackend()">Call backend</button>
-    <pre id="output"></pre>
+    <header class="hero">
+      <p class="eyebrow">Kubernetes + Helm Demo</p>
+      <h1>Vacation Gallery</h1>
+      <p id="summary">Loading vacation memories...</p>
+    </header>
 
-    <script>
-      async function callBackend() {
-        const response = await fetch("/api/hello");
-        const data = await response.json();
-        document.getElementById("output").textContent =
-          JSON.stringify(data, null, 2);
-      }
-    </script>
+    <main>
+      <section id="gallery" class="gallery"></section>
+    </main>
+
+    <script src="/app.js"></script>
   </body>
 </html>

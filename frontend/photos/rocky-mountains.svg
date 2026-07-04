@@ -1,0 +1,7 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#1e293b"/>
+  <circle cx="650" cy="120" r="70" fill="#fbbf24"/>
+  <path d="M0 470 210 230 360 410 500 180 800 500v100H0z" fill="#64748b"/>
+  <path d="M210 230 275 335 165 335zM500 180 585 330 430 330z" fill="#f8fafc"/>
+  <text x="40" y="540" font-family="Arial" font-size="42" fill="#e2e8f0">Rocky Mountains</text>
+</svg>
